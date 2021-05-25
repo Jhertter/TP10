@@ -16,8 +16,8 @@
 #include <stdint.h>
 void bitSet(void*, unsigned int, char);
 void bitClr(void*, unsigned int, char);
-/*int bitGet(puerto* p1, unsigned int bit);
-void bitToggle(puerto* p1, unsigned int bit);
+char bitGet(void*, unsigned int, char);
+/*void bitToggle(puerto* p1, unsigned int bit);
 void maskOn(puerto* p1, char mask);
 void maskOff(puerto* p1, char mask);
 void maskToggle(puerto* p1, char mask);
@@ -43,10 +43,11 @@ int main(int argc, char** argv)
     puertoD.A = 0xFF;
     puertoD.B = 0xFF;
     //void * ptr = puertoD.A;
+    printf("el bit 15 del puerto D es: %d\n",bitGet(&puertoD, 15, 'D'));
     bitClr(&puertoD, 15, 'D');
     printf("%x", puertoD.A);
     printf("%x", puertoD.B);
-    
+    printf("\nel bit 15 del puerto D es: %d",bitGet(&puertoD, 15, 'D'));
   //  00010002 00030004
   //     A        B
    /*
@@ -97,8 +98,15 @@ void bitClr (void* ptr, unsigned int nro, char puerto)
 
 char bitGet(void* ptr, unsigned int nro, char puerto)
 {
+    uint16_t resultado;
     if(puerto == 'D')
     {
-        
+        resultado = (*(int*)ptr >> nro);
+        return resultado % 2;
+    }
+    else
+    {
+        resultado = (*(char*)ptr >> nro);
+        return resultado % 2;
     }
 }
